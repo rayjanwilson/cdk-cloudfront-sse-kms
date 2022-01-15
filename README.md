@@ -1,14 +1,10 @@
-# Welcome to your CDK TypeScript project!
+# CloudFront with S3 SSE-KMS
 
-This is a blank project for TypeScript development with CDK.
+Normally with a regular configuration of S3 with amazon provided encryption (SSE-S3), CloudFront has no problem reading the hosted files from the bucket.
+However, when you introduce a customer generated key via KMS (SSE-KMS), well now that throws a wrench into things.
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+For now, you need to provide a Lambda@Edge function that handles this for you. smh i know.
 
-## Useful commands
+To further complicate things, this [blog post by AWS](https://aws.amazon.com/blogs/networking-and-content-delivery/serving-sse-kms-encrypted-content-from-s3-using-cloudfront/) explains everything well, but then uses a custom signing function, rather than using `SignatureV4` provided by the aws sdk.
 
- * `npm run build`   compile typescript to js
- * `npm run watch`   watch for changes and compile
- * `npm run test`    perform the jest unit tests
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
+So the intent of this is to not only demonstrate how to wire this up with cdk v2, but to also do it using the aws-sdk provided signing functions
