@@ -10,6 +10,7 @@
     "test": "jest",
     "cdk": "cdk",
     "deploy": "cdk deploy --ci --require-approval never --all",
+    "diff": "cdk diff",
     "upgrade": "npx npm-check-updates -u && npm install"
   },
   "engines": {

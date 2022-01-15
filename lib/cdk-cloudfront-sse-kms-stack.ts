@@ -1,16 +1,27 @@
 import { Stack, StackProps } from 'aws-cdk-lib';
+import { CloudfrontConstruct } from './cloudfront';
+import { SiteBucket } from './bucket';
+import { WebApp } from './webapp';
+
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+
+export interface IProps extends StackProps {
+  projectName: string;
+}
 
 export class CdkCloudfrontSseKmsStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: IProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const { projectName } = props;
+    const { siteBucket } = new SiteBucket(this, 'Bucket', { projectName });
+    const { distribution } = new CloudfrontConstruct(this, 'Distro', { siteBucket });
+    const webapp = new WebApp(this, 'WebApp', {
+      projectName,
+      siteBucket,
+      distribution: distribution,
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'CdkCloudfrontSseKmsQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    this.exportValue(`https://${distribution.distributionDomainName}`, { name: 'url' });
   }
 }
