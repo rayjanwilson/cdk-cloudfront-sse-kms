@@ -9,7 +9,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "deploy": "cdk deploy --ci --require-approval never --all",
+    "deploy": "tsc && cdk deploy --ci --require-approval never --all",
     "diff": "cdk diff",
     "upgrade": "npx npm-check-updates -u && npm install"
   },
@@ -17,6 +17,7 @@
     "node": ">=16.0.0"
   },
   "devDependencies": {
+    "@aws-sdk/types": "^3.47.0",
     "@types/aws-lambda": "^8.10.89",
     "@types/jest": "^27.0.0",
     "@types/node": "^16.11.19",
@@ -33,6 +34,9 @@
     "typescript": "~4.5.4"
   },
   "dependencies": {
+    "@aws-crypto/sha256-js": "^2.0.1",
+    "@aws-sdk/protocol-http": "^3.47.0",
+    "@aws-sdk/signature-v4": "^3.47.0",
     "aws-cdk-lib": "^2.8.0",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.16",

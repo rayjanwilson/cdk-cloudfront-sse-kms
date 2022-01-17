@@ -1,0 +1,136 @@
+{
+  "Records": [
+    {
+      "cf": {
+        "config": {
+          "distributionDomainName": "d3djlhdqvadc98.cloudfront.net",
+          "distributionId": "E3AC721CL6GA6K",
+          "eventType": "origin-request",
+          "requestId": "kIfke8OJo5qS_q0WdE97UEswJ4tA3Dhed95dEwi3niexaf9FxdDXTg=="
+        },
+        "request": {
+          "clientIp": "72.49.234.67",
+          "headers": {
+            "host": [
+              {
+                "key": "Host",
+                "value": "d3djlhdqvadc98.cloudfront.net"
+              }
+            ],
+            "accept-language": [
+              {
+                "key": "Accept-Language",
+                "value": "en-US,en;q=0.5"
+              }
+            ],
+            "accept": [
+              {
+                "key": "Accept",
+                "value": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+              }
+            ],
+            "referer": [
+              {
+                "key": "Referer",
+                "value": "https://console.aws.amazon.com/"
+              }
+            ],
+            "te": [
+              {
+                "key": "Te",
+                "value": "trailers"
+              }
+            ],
+            "x-forwarded-for": [
+              {
+                "key": "X-Forwarded-For",
+                "value": "72.49.234.67"
+              }
+            ],
+            "user-agent": [
+              {
+                "key": "User-Agent",
+                "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:95.0) Gecko/20100101 Firefox/95.0"
+              }
+            ],
+            "via": [
+              {
+                "key": "Via",
+                "value": "2.0 cb9d081dd02e8f44a734d662caddbdb6.cloudfront.net (CloudFront)"
+              }
+            ],
+            "accept-encoding": [
+              {
+                "key": "Accept-Encoding",
+                "value": "br,gzip"
+              }
+            ],
+            "dnt": [
+              {
+                "key": "dnt",
+                "value": "1"
+              }
+            ],
+            "upgrade-insecure-requests": [
+              {
+                "key": "upgrade-insecure-requests",
+                "value": "1"
+              }
+            ],
+            "sec-fetch-dest": [
+              {
+                "key": "sec-fetch-dest",
+                "value": "document"
+              }
+            ],
+            "sec-fetch-mode": [
+              {
+                "key": "sec-fetch-mode",
+                "value": "navigate"
+              }
+            ],
+            "sec-fetch-site": [
+              {
+                "key": "sec-fetch-site",
+                "value": "cross-site"
+              }
+            ],
+            "sec-fetch-user": [
+              {
+                "key": "sec-fetch-user",
+                "value": "?1"
+              }
+            ],
+            "pragma": [
+              {
+                "key": "Pragma",
+                "value": "no-cache"
+              }
+            ],
+            "cache-control": [
+              {
+                "key": "Cache-Control",
+                "value": "no-cache"
+              }
+            ]
+          },
+          "method": "GET",
+          "origin": {
+            "custom": {
+              "customHeaders": {},
+              "domainName": "cfssekms-backendstack-bucketd7feb781-1ulft30bz40rt.s3.us-east-1.amazonaws.com",
+              "keepaliveTimeout": 5,
+              "path": "",
+              "port": 443,
+              "protocol": "https",
+              "readTimeout": 30,
+              "sslProtocols": ["TLSv1.2"]
+            }
+          },
+          "querystring": "",
+          "uri": "/index.html"
+        }
+      }
+    }
+  ]
+}

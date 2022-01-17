@@ -20,10 +20,10 @@ export class SiteBucket extends Construct {
     const encryptionKey = kms.Alias.fromAliasName(this, 's3Key', `${projectName}_${stagename}_S3`);
     this.siteBucket = new s3.Bucket(this, 'Bucket', {
       //   bucketName: siteDomain,
-      encryption: s3.BucketEncryption.KMS,
-      encryptionKey,
-      websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'index.html',
+      // encryption: s3.BucketEncryption.KMS,
+      // encryptionKey,
+      // websiteIndexDocument: 'index.html',
+      // websiteErrorDocument: 'index.html',
       publicReadAccess: false,
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
 

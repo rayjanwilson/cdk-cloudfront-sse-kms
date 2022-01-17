@@ -8,7 +8,7 @@ import * as iam from 'aws-cdk-lib/aws-iam';
 export interface IProps {
   projectName: string;
   siteBucket: s3.Bucket;
-  distribution: cloudfront.Distribution;
+  distribution: cloudfront.CloudFrontWebDistribution | cloudfront.Distribution;
 }
 
 export class WebApp extends Construct {
@@ -49,8 +49,8 @@ export class WebApp extends Construct {
       distribution,
       distributionPaths: ['/*'],
       memoryLimit: 1024,
-      serverSideEncryption: s3Deployment.ServerSideEncryption.AWS_KMS,
-      serverSideEncryptionAwsKmsKeyId: encryptionKeyId,
+      // serverSideEncryption: s3Deployment.ServerSideEncryption.AWS_KMS,
+      // serverSideEncryptionAwsKmsKeyId: encryptionKeyId,
       role: bucketDeploymentRole,
     });
   }
