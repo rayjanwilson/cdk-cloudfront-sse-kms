@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { NestedStack, NestedStackProps } from 'aws-cdk-lib';
 
 import { Distribution } from './cloudfront';
 import { SiteBucket } from './bucket';
@@ -6,8 +6,8 @@ import { WebApp } from './webapp';
 
 import { Construct } from 'constructs';
 
-export class SseS3Stack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps) {
+export class SseS3Stack extends NestedStack {
+  constructor(scope: Construct, id: string, props?: NestedStackProps) {
     super(scope, id, props);
 
     // s3 hosting
