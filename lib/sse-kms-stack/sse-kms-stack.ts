@@ -7,7 +7,7 @@ import { WebApp } from './webapp';
 import { Construct } from 'constructs';
 import { S3Key } from './kms-keys';
 
-export class SseS3Stack extends Stack {
+export class SseKMSStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
