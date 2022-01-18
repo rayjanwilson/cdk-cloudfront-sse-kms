@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { NestedStack, NestedStackProps } from 'aws-cdk-lib';
 
 import { Distribution } from './cloudfront';
 import { SiteBucket } from './bucket';
@@ -7,8 +7,8 @@ import { WebApp } from './webapp';
 import { Construct } from 'constructs';
 import { S3Key } from './kms-keys';
 
-export class SseKMSStack extends Stack {
-  constructor(scope: Construct, id: string, props: StackProps) {
+export class SseKMSStack extends NestedStack {
+  constructor(scope: Construct, id: string, props?: NestedStackProps) {
     super(scope, id, props);
 
     // kms keys
