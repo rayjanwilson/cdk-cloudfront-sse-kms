@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 import 'source-map-support/register';
 import { App } from 'aws-cdk-lib';
-import { CdkCloudfrontSseKmsStack } from '../lib/cdk-cloudfront-sse-kms-stack';
-import { KeyStack } from '../lib/kms-keys';
+import { NoEncryptionStack } from '../lib/no-encryption-stack/no-enc-stack';
+import { SseS3Stack } from '../lib/sse-s3-stack/sse-s3-stack';
+import { SseKMSStack } from '../lib/sse-kms-stack/sse-kms-stack';
 
 const projectName = 'CfSseKms';
 const env = {
@@ -11,9 +12,6 @@ const env = {
 
 const app = new App();
 
-const keyStack = new KeyStack(app, `${projectName}-KeyStack`, { projectName, env });
-const backend = new CdkCloudfrontSseKmsStack(app, `${projectName}-BackendStack`, {
-  projectName,
-  env,
-});
-backend.addDependency(keyStack, 'need the keys to be available first');
+new NoEncryptionStack(app, 'NoEnc', { env });
+new SseS3Stack(app, 'SSES3', { env });
+new SseKMSStack(app, 'SseKMS', { env });

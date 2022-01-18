@@ -1,7 +1,7 @@
 *.js
 !jest.config.js
 !.eslintrc.js
-!lib/lambda/index.js
+!lib/sse-kms-stack/lambda/index.js
 *.d.ts
 
 # Dependency directories
