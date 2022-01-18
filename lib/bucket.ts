@@ -21,6 +21,7 @@ export class SiteBucket extends Construct {
     this.siteBucket = new s3.Bucket(this, 'Bucket', {
       //   bucketName: siteDomain,
       // encryption: s3.BucketEncryption.KMS,
+      encryption: s3.BucketEncryption.S3_MANAGED,
       // encryptionKey,
       // websiteIndexDocument: 'index.html',
       // websiteErrorDocument: 'index.html',

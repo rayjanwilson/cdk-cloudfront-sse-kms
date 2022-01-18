@@ -27,17 +27,17 @@ export class CloudfrontConstruct extends Construct {
     siteBucket.grantRead(oai);
 
     // edge by hand
-    const myOriginRequestHandler = new lambdaNode.NodejsFunction(this, 'EdgeFnRaw', {
-      entry: `${__dirname}/lambda/sig4style.ts`,
-      handler: 'handler',
-      runtime: lambda.Runtime.NODEJS_14_X,
-      logRetention: logs.RetentionDays.ONE_MONTH,
-    });
-    siteBucket.grantRead(myOriginRequestHandler);
-    const myOriginRequestHandlerVersion = new lambda.Version(this, 'EdgeFnVersion', {
-      lambda: myOriginRequestHandler,
-    });
-    siteBucket.grantRead(myOriginRequestHandlerVersion);
+    // const myOriginRequestHandler = new lambdaNode.NodejsFunction(this, 'EdgeFnRaw', {
+    //   entry: `${__dirname}/lambda/sig4style.ts`,
+    //   handler: 'handler',
+    //   runtime: lambda.Runtime.NODEJS_14_X,
+    //   logRetention: logs.RetentionDays.ONE_MONTH,
+    // });
+    // siteBucket.grantRead(myOriginRequestHandler);
+    // const myOriginRequestHandlerVersion = new lambda.Version(this, 'EdgeFnVersion', {
+    //   lambda: myOriginRequestHandler,
+    // });
+    // siteBucket.grantRead(myOriginRequestHandlerVersion);
 
     // const myOriginRequestHandler = new cloudfront.experimental.EdgeFunction(this, 'EdgeFn', {
     //   code: lambda.Code.fromAsset(`${__dirname}/lambda/`),
@@ -114,12 +114,12 @@ export class CloudfrontConstruct extends Construct {
               defaultTtl: Duration.seconds(0),
               minTtl: Duration.seconds(0),
               maxTtl: Duration.seconds(0),
-              lambdaFunctionAssociations: [
-                {
-                  eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
-                  lambdaFunction: myOriginRequestHandlerVersion, //myOriginRequestHandler,
-                },
-              ],
+              // lambdaFunctionAssociations: [
+              //   {
+              //     eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
+              //     lambdaFunction: myOriginRequestHandlerVersion, //myOriginRequestHandler,
+              //   },
+              // ],
             },
           ],
         },

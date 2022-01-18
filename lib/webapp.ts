@@ -50,6 +50,7 @@ export class WebApp extends Construct {
       distributionPaths: ['/*'],
       memoryLimit: 1024,
       // serverSideEncryption: s3Deployment.ServerSideEncryption.AWS_KMS,
+      serverSideEncryption: s3Deployment.ServerSideEncryption.AES_256,
       // serverSideEncryptionAwsKmsKeyId: encryptionKeyId,
       role: bucketDeploymentRole,
     });
