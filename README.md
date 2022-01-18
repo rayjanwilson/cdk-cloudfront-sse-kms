@@ -9,6 +9,11 @@ To further complicate things, this [blog post by AWS](https://aws.amazon.com/blo
 
 So the intent of this is to not only demonstrate how to wire this up with cdk v2, but to also do it using the aws-sdk provided signing functions
 
+demonstrate the following:
+- cloudfront to s3, no encryption
+- cloudfront to s3, sse-s3
+- cloudfront to s3, sse-kms (from blog)
+
 
 
 Excellent Links:
