@@ -17,7 +17,7 @@ export class S3Key extends Construct {
     this.s3key = new kms.Key(this, 'S3ts', {
       enableKeyRotation: true,
       removalPolicy: RemovalPolicy.DESTROY,
-      alias: 'SSE_KMS_S3_TS',
+      alias: 'SSE_KMS_TS',
       policy: new iam.PolicyDocument({
         statements: [
           new iam.PolicyStatement({

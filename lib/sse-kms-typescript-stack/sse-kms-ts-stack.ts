@@ -16,7 +16,7 @@ export class SseKMSTSStack extends NestedStack {
     super(scope, id, props);
 
     // kms keys
-    const { s3key } = new S3Key(this, 'Key');
+    const { s3key } = new S3Key(this, 'KeyTs');
 
     // s3 hosting
     const { siteBucket } = new SiteBucket(this, 'SiteBucket', { s3key });
