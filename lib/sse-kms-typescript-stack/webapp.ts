@@ -1,12 +1,13 @@
 import { Construct } from 'constructs';
-import { Fn } from 'aws-cdk-lib';
+
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as s3Deployment from 'aws-cdk-lib/aws-s3-deployment';
 import * as iam from 'aws-cdk-lib/aws-iam';
+import * as kms from 'aws-cdk-lib/aws-kms';
 
 export interface IProps {
-  projectName: string;
+  s3key: kms.Key;
   siteBucket: s3.Bucket;
   distribution: cloudfront.CloudFrontWebDistribution | cloudfront.Distribution;
 }
@@ -15,9 +16,7 @@ export class WebApp extends Construct {
   constructor(scope: Construct, id: string, props: IProps) {
     super(scope, id);
 
-    const stagename: string = this.node.tryGetContext('stageName') ?? 'dev';
-
-    const { projectName, siteBucket, distribution } = props;
+    const { s3key, siteBucket, distribution } = props;
 
     const bucketDeploymentRole = new iam.Role(this, 'Role', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -32,7 +31,6 @@ export class WebApp extends Construct {
     );
     siteBucket.grantReadWrite(bucketDeploymentRole);
 
-    const encryptionKeyId = Fn.importValue(`${projectName}S3KeyID${stagename}`).toString();
     bucketDeploymentRole.addToPolicy(
       new iam.PolicyStatement({
         actions: ['kms:Decrypt', 'kms:GenerateDataKey'],
@@ -49,9 +47,8 @@ export class WebApp extends Construct {
       distribution,
       distributionPaths: ['/*'],
       memoryLimit: 1024,
-      // serverSideEncryption: s3Deployment.ServerSideEncryption.AWS_KMS,
-      serverSideEncryption: s3Deployment.ServerSideEncryption.AES_256,
-      // serverSideEncryptionAwsKmsKeyId: encryptionKeyId,
+      serverSideEncryption: s3Deployment.ServerSideEncryption.AWS_KMS,
+      serverSideEncryptionAwsKmsKeyId: s3key.keyId,
       role: bucketDeploymentRole,
     });
   }

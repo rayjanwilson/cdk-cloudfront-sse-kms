@@ -1,12 +1,9 @@
 #!/usr/bin/env node
 import {
-  CloudFrontResponseResult,
   CloudFrontRequestEvent,
   CloudFrontHeaders,
   CloudFrontRequestResult,
-  CloudFrontRequestCallback,
   CloudFrontRequestHandler,
-  Callback,
   CloudFrontRequest,
 } from 'aws-lambda';
 import { HeaderBag } from '@aws-sdk/types';
@@ -17,8 +14,6 @@ import { defaultProvider } from '@aws-sdk/credential-provider-node';
 
 interface CreateSignHttpRequestParams {
   body?: string;
-  // headers?: CloudFrontHeaders;
-  // requestid?: string;
   hostname: string;
   method?: string;
   path?: string;
@@ -30,9 +25,7 @@ interface CreateSignHttpRequestParams {
 }
 
 export const handler: CloudFrontRequestHandler = async (
-  event: CloudFrontRequestEvent,
-  context: any,
-  callback: Callback<CloudFrontRequestResult>
+  event: CloudFrontRequestEvent
 ): Promise<CloudFrontRequestResult> => {
   console.log('\nevent');
   console.log(JSON.stringify(event, null, 4));
@@ -40,8 +33,6 @@ export const handler: CloudFrontRequestHandler = async (
   const { request, config } = event.Records[0].cf;
 
   let signedRequest = await createSignedHttpRequest({
-    // headers: request.headers,
-    // requestid: config.requestId,
     hostname: request.origin!.custom!.domainName!,
     path: request.origin?.custom?.path,
     protocol: request.origin?.custom?.protocol,
@@ -64,7 +55,7 @@ export const handler: CloudFrontRequestHandler = async (
   };
   console.log('\nfinal request');
   console.log(JSON.stringify(finalRequest, null, 4));
-  // callback(null, finalRequest);
+
   return finalRequest;
 };
 
@@ -77,13 +68,11 @@ const convertHeaders = (headers: HeaderBag): CloudFrontHeaders => {
 };
 
 const createSignedHttpRequest = ({
-  // headers,
   hostname,
-  // requestid,
   method = 'GET',
   path = '/',
-  protocol = 'http:',
-  // query,
+  protocol = 'https:',
+  query,
   service,
   region = 'us-east-1',
 }: CreateSignHttpRequestParams): Promise<HttpRequest> => {
@@ -99,6 +88,7 @@ const createSignedHttpRequest = ({
     method,
     protocol,
     path,
+    query,
     headers: {
       host: hostname,
     },
