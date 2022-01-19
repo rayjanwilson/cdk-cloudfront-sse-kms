@@ -1,5 +1,3 @@
-import { Stack } from 'aws-cdk-lib';
-
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
 import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from 'aws-cdk-lib/aws-s3';
@@ -19,11 +17,6 @@ export class Distribution extends Construct {
     super(scope, id);
 
     const { siteBucket } = props;
-    const { region } = Stack.of(this);
-
-    // Grant access to cloudfront
-    const oai = new cloudfront.OriginAccessIdentity(this, 'OAI', { comment: 'Created by CDK' });
-    siteBucket.grantRead(oai);
 
     const myOriginRequestHandler = new cloudfront.experimental.EdgeFunction(this, 'EdgeFn', {
       code: lambda.Code.fromAsset(`${__dirname}/lambda/`),
@@ -57,7 +50,8 @@ export class Distribution extends Construct {
       })
     );
 
-    const s3Origin = new origins.HttpOrigin(`${siteBucket.bucketName}.s3.${region}.amazonaws.com`);
+    const s3Origin = new origins.HttpOrigin(siteBucket.bucketRegionalDomainName);
+
     this.distribution = new cloudfront.Distribution(this, 'CloudFront', {
       defaultRootObject: 'index.html',
       defaultBehavior: {
@@ -65,6 +59,7 @@ export class Distribution extends Construct {
         origin: s3Origin,
         originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
         edgeLambdas: [
           {
             functionVersion: myOriginRequestHandler,
@@ -75,31 +70,6 @@ export class Distribution extends Construct {
       enableLogging: true,
       logIncludesCookies: true,
     });
-    // this.distribution = new cloudfront.CloudFrontWebDistribution(this, 'CloudFrontWebDist', {
-    //   defaultRootObject: 'index.html',
-    //   originConfigs: [
-    //     {
-    //       s3OriginSource: {
-    //         s3BucketSource: siteBucket,
-    //         originAccessIdentity: oai,
-    //       },
-    //       behaviors: [
-    //         {
-    //           isDefaultBehavior: true,
-    //           defaultTtl: Duration.seconds(0),
-    //           minTtl: Duration.seconds(0),
-    //           maxTtl: Duration.seconds(0),
-    //           lambdaFunctionAssociations: [
-    //             {
-    //               eventType: cloudfront.LambdaEdgeEventType.ORIGIN_REQUEST,
-    //               lambdaFunction: myOriginRequestHandler,
-    //             },
-    //           ],
-    //         },
-    //       ],
-    //     },
-    //   ],
-    // });
   }
 }
 

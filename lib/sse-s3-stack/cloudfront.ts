@@ -1,7 +1,5 @@
-import { Duration } from 'aws-cdk-lib';
-
 import * as cloudfront from 'aws-cdk-lib/aws-cloudfront';
-
+import * as origins from 'aws-cdk-lib/aws-cloudfront-origins';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 
 import { Construct } from 'constructs';
@@ -18,28 +16,19 @@ export class Distribution extends Construct {
 
     const { siteBucket } = props;
 
-    // Grant access to cloudfront
-    const oai = new cloudfront.OriginAccessIdentity(this, 'OAI', { comment: 'Created by CDK' });
-    siteBucket.grantRead(oai);
+    const s3Origin = new origins.HttpOrigin(siteBucket.bucketRegionalDomainName);
 
-    this.distribution = new cloudfront.CloudFrontWebDistribution(this, 'CloudFrontWebDist', {
+    this.distribution = new cloudfront.Distribution(this, 'CloudFront', {
       defaultRootObject: 'index.html',
-      originConfigs: [
-        {
-          s3OriginSource: {
-            s3BucketSource: siteBucket,
-            originAccessIdentity: oai,
-          },
-          behaviors: [
-            {
-              isDefaultBehavior: true,
-              defaultTtl: Duration.seconds(0),
-              minTtl: Duration.seconds(0),
-              maxTtl: Duration.seconds(0),
-            },
-          ],
-        },
-      ],
+      defaultBehavior: {
+        compress: true,
+        origin: s3Origin,
+        originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
+        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
+        cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
+      },
+      enableLogging: true,
+      logIncludesCookies: true,
     });
   }
 }
