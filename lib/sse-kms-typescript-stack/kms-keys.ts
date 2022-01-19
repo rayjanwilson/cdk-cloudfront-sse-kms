@@ -14,7 +14,7 @@ export class S3Key extends Construct {
       managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('AWSKeyManagementServicePowerUser')],
     });
 
-    this.s3key = new kms.Key(this, 'S3', {
+    this.s3key = new kms.Key(this, 'S3ts', {
       enableKeyRotation: true,
       removalPolicy: RemovalPolicy.DESTROY,
       alias: 'SSE_KMS_S3_TS',
