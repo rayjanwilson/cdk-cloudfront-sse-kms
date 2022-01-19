@@ -16,14 +16,13 @@ export class Distribution extends Construct {
 
     const { siteBucket } = props;
 
-    const s3Origin = new origins.HttpOrigin(siteBucket.bucketRegionalDomainName);
+    // const s3Origin = new origins.HttpOrigin(siteBucket.bucketRegionalDomainName);
+    const s3Origin = new origins.S3Origin(siteBucket);
 
     this.distribution = new cloudfront.Distribution(this, 'CloudFront', {
       defaultRootObject: 'index.html',
       defaultBehavior: {
-        compress: true,
         origin: s3Origin,
-        originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
       },

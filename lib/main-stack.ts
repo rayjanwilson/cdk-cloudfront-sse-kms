@@ -9,8 +9,12 @@ export class MainStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps) {
     super(scope, id, props);
 
-    new NoEncryptionStack(this, 'NoEnc');
-    new SseS3Stack(this, 'SSES3');
-    new SseKMSStack(this, 'SseKMS');
+    const no_enc = new NoEncryptionStack(this, 'NoEnc');
+    const sse_s3 = new SseS3Stack(this, 'SseS3');
+    const sse_kms = new SseKMSStack(this, 'SseKMS');
+
+    this.exportValue(`https://${no_enc.distribution.distributionDomainName}`, { name: 'no-enc-url' });
+    this.exportValue(`https://${sse_s3.distribution.distributionDomainName}`, { name: 'sse-s3-url' });
+    this.exportValue(`https://${sse_kms.distribution.distributionDomainName}`, { name: 'sse-kms-url' });
   }
 }

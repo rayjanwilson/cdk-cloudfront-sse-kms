@@ -27,31 +27,40 @@ export class Distribution extends Construct {
           new iam.ServicePrincipal('lambda.amazonaws.com'),
           new iam.ServicePrincipal('edgelambda.amazonaws.com')
         ),
+        inlinePolicies: {
+          enablekms: new iam.PolicyDocument({
+            statements: [
+              new iam.PolicyStatement({
+                resources: ['*'],
+                actions: ['kms:*'],
+              }),
+            ],
+          }),
+        },
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'),
           iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess'),
         ],
       }),
       // logRetention: logs.RetentionDays.ONE_MONTH, // turns out the EdgeFunction object does the log stuff for us, and is set to never expire
-      // will look like: /aws/lambda/us-east-1.CfSseKms-BackendStack-DistroEdgeFn17833B94-FTFBGbCnymnI
-    });
+      //
+    }); // logs will be in a place like:  /aws/lambda/us-east-1.Scenarios-EdgeFn17833B94-FTFBGbCnymnI
 
-    myOriginRequestHandler.addToRolePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['kms:Decrypt'],
-        resources: ['*'],
-      })
-    );
+    // myOriginRequestHandler.addToRolePolicy(
+    //   new iam.PolicyStatement({
+    //     effect: iam.Effect.ALLOW,
+    //     actions: ['kms:Decrypt'],
+    //     resources: ['*'],
+    //   })
+    // );
 
-    const s3Origin = new origins.HttpOrigin(siteBucket.bucketRegionalDomainName);
+    // const s3Origin = new origins.HttpOrigin(siteBucket.bucketRegionalDomainName);
+    const s3Origin = new origins.S3Origin(siteBucket);
 
     this.distribution = new cloudfront.Distribution(this, 'CloudFront', {
       defaultRootObject: 'index.html',
       defaultBehavior: {
-        compress: true,
         origin: s3Origin,
-        originRequestPolicy: cloudfront.OriginRequestPolicy.ALL_VIEWER,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
         cachePolicy: cloudfront.CachePolicy.CACHING_DISABLED,
         edgeLambdas: [

@@ -18,10 +18,6 @@ export class SiteBucket extends Construct {
     this.siteBucket = new s3.Bucket(this, 'Bucket', {
       encryption: s3.BucketEncryption.KMS,
       encryptionKey: s3key,
-      websiteIndexDocument: 'index.html',
-      websiteErrorDocument: 'index.html',
-      publicReadAccess: false,
-      blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
 
       /**
        * The default removal policy is RETAIN, which means that cdk destroy will not attempt to delete
