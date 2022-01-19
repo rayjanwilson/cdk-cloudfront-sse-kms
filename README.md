@@ -14,7 +14,7 @@ demonstrate the following:
 - cloudfront to s3, sse-s3
 - cloudfront to s3, sse-kms (from blog)
 - cloudfront to s3, sse-kms, lamda@edge in typescript with @aws-sdk/signature-v4 library
-
+  - will need to `cd lib/sse-kms-typescript-stack/lambda && npm install`
 
 
 Excellent Links:
