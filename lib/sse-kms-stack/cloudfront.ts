@@ -35,13 +35,7 @@ export class Distribution extends Construct {
       // logRetention: logs.RetentionDays.ONE_MONTH, // turns out the EdgeFunction object does the log stuff for us, and is set to never expire
       // will look like: /aws/lambda/us-east-1.CfSseKms-BackendStack-DistroEdgeFn17833B94-FTFBGbCnymnI
     });
-    myOriginRequestHandler.addToRolePolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: ['s3:*'],
-        resources: [siteBucket.bucketArn, siteBucket.arnForObjects('*')],
-      })
-    );
+
     myOriginRequestHandler.addToRolePolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
