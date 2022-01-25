@@ -7,7 +7,7 @@ For now, you need to provide a Lambda@Edge function that handles this for you.
 
 This [blog post by AWS](https://aws.amazon.com/blogs/networking-and-content-delivery/serving-sse-kms-encrypted-content-from-s3-using-cloudfront/) explains everything well.
 
-So the intent of this is to not only demonstrate how to wire this up with cdk v2, but to also do it using the aws-sdk provided signing functions
+The intent of this is to not only demonstrate how to wire this up with cdk v2, but to also do it using the aws-sdk provided signing functions
 
 demonstrate the following:
 - cloudfront to s3, no encryption
@@ -16,8 +16,17 @@ demonstrate the following:
 - cloudfront to s3, sse-kms, lamda@edge in typescript with @aws-sdk/signature-v4 library
   - will need to `cd lib/sse-kms-typescript-stack/lambda && npm install`
 
+# Build and deploy
 
-Excellent Links:
+- ensure node is [installed](https://github.com/nvm-sh/nvm/blob/master/README.md)
+- install dependencies
+  - `npm install`
+- ensure cdk is [bootstrapped](https://docs.aws.amazon.com/cdk/v2/guide/bootstrapping.html) to your aws account
+- deploy via cdk
+  - `npm run deploy`
+- three urls will be displayed once deployed, one for each scenario
+
+# Excellent Links
 - original blog: https://aws.amazon.com/blogs/networking-and-content-delivery/serving-sse-kms-encrypted-content-from-s3-using-cloudfront/
 - cdk source:
   - https://github.com/aws/aws-cdk/blob/master/packages/%40aws-cdk/aws-cloudfront/lib/web-distribution.ts

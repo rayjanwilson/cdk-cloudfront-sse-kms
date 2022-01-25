@@ -33,11 +33,11 @@ export const handler: CloudFrontRequestHandler = async (
   const { request, config } = event.Records[0].cf;
 
   let signedRequest = await createSignedHttpRequest({
-    hostname: request.origin!.custom!.domainName!,
-    path: request.origin?.custom?.path,
-    protocol: request.origin?.custom?.protocol,
+    hostname: request.origin!.s3!.domainName!,
+    path: request.origin?.s3?.path,
+    protocol: 'http',
     service: 's3',
-    region: 'us-east-1',
+    region: request.origin?.s3?.region,
   });
 
   console.log('\nsigned request');
